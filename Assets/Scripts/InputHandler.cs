@@ -7,11 +7,6 @@ namespace CW
     public class InputHandler : MonoBehaviour
     {
 
-        public void Awake()
-        {
-            OnEnable();
-        }
-
         public float horizontal;
         public float vertical;
         public float moveAmount;
@@ -20,8 +15,27 @@ namespace CW
 
         PlayerControls inputActions;
 
+        CameraHandler cameraHandler;
+
         Vector2 movementInput;
         Vector2 cameraInput;
+
+        private void Awake()
+        {
+            //may need OnEnable() here
+            cameraHandler = CameraHandler.singleton;
+        }
+
+        private void FixedUpdate()
+        {
+            float delta = Time.fixedDeltaTime;
+            if(cameraHandler != null)
+            {
+                cameraHandler.FollowTarget(delta);
+                cameraHandler.HandleCameraRotation(delta, mouseX, mouseY);
+
+            }
+        }
 
         public void OnEnable()
         {
